@@ -27,12 +27,6 @@ create table fact_player_data (
 	constraint fk_opponent_team_id
 		foreign key (opponent_team_id)
 		references teams(team_id),
-
-	team_id int,
-	constraint fk_team_id
-		foreign key (team_id)
-		references teams(team_id)
-
 		
 	total_points int,
 	was_home bool,
