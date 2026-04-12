@@ -25,3 +25,33 @@ https://fantasy.premierleague.com/api/fixtures/
 ```
 https://fantasy.premierleague.com/api/element-summary/{player_id}/
 ```
+
+## How to setup the project 
+**Install the following Technology to start**
+- Docker (for setting up the postgres container)
+- Airflow ( if you want to orchestrate ) 
+
+> **Steps to setup**
+- turn on your postgres server instance
+- locate your airflow installation and copy the dags file content into the airflow dags folder
+- turn on your airflow
+- run the fpl_db_creation_dag
+- run the fpl_data_update_dag
+
+## Some major decision reasoning
+
+### Why dimensional data modelling 
+***Main goal of this project was to create an analyst friendly database***
+- Dimensional data modelling because of decentrallized nature helps in easier joins
+- Requires fewere joins during query 
+- Joins are more optimized compared to a traditional centrallized databse
+
+### Why Idempotent pipelines 
+- Idempotent pipelines makes the ETL pipeline data redundant proof
+- It makes the pipeline somewhat fault tolerant 
+
+### How is the idempotency pipelines implemented
+- Creates a staging table with all the fresh data that comes in from API
+- Merges the staging table with actual table with a merge query that compares the indicators and updates element with changes 
+- It also inserts new records which are not present in the main table 
+
